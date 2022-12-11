@@ -1,0 +1,19 @@
+﻿<Window x:Class="TeamViwerClient.Views.ClientView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TeamViwerClient.Views"
+        mc:Ignorable="d"
+        Title="ClientView" Height="450" Width="800">
+    <DockPanel>
+        <StackPanel  DockPanel.Dock="Bottom" Orientation="Horizontal">
+            <Button Command="{Binding ConnectCommand}" FontSize="25" >Connection</Button>
+            <Label  FontSize="25">Ip Address</Label>
+            <TextBox Text="{Binding Ip}"  FontSize="25" Width="200"></TextBox>
+            <Label  FontSize="25">Port</Label>
+            <TextBox Text="{Binding Port}" FontSize="25" Width="100"></TextBox>
+        </StackPanel>
+        <Image Source="{Binding Image}"></Image>
+    </DockPanel>
+</Window>
