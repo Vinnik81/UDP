@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TeamViewerSerever.Views"
         mc:Ignorable="d"
+        Icon="Photo/HomeServer.ico"
         Title="ServerView" FontSize="20" Height="200" Width="400">
     <StackPanel>
         <Button Command="{Binding StartCommand}">Start</Button>

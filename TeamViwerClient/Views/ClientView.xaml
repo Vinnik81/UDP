@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TeamViwerClient.Views"
         mc:Ignorable="d"
+        Icon="Photo/client.ico"
         Title="ClientView" Height="450" Width="800">
     <DockPanel>
         <StackPanel  DockPanel.Dock="Bottom" Orientation="Horizontal">
