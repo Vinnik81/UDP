@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -17,12 +18,13 @@ namespace TeamViwerClient.ViewModels
     {
         private ImageSource image;
         public ImageSource Image { get => image; set => Set(ref image, value); }
-        //  private string ip;
+        private string ip = "127.0.0.1";
+        public string Ip { get => ip; set => Set(ref ip, value); }
 
-        //   public string Ip { get => ip; set => Set(ref ip, value); }
         private int port = 8080;
-
-        public int Port { get => port; set => Set(ref port, value); }
+        public int Port { get => port; set => Set(ref port, value); } 
+        private string date;
+        public string Date { get => date; set => Set(ref date, value); }
 
         private RelayCommand connectCommand = null;
         public RelayCommand ConnectCommand => connectCommand ??= new RelayCommand(
@@ -33,6 +35,7 @@ namespace TeamViwerClient.ViewModels
                     UdpClient udpClient = new UdpClient(Port);
                     using (var memory = new MemoryStream())
                     {
+                        
                         while (true)
                         {
                             try
@@ -42,16 +45,32 @@ namespace TeamViwerClient.ViewModels
                                 memory.Write(data, 0, data.Length);
                                 if (data.Length == 3 && data[0] == 1 && data[1] == 2 && data[2] == 3)
                                 {
+                                    
                                     Application.Current.Dispatcher.Invoke(() =>
                                     {
+                                        Date = null;
                                         Image = ByteToImage(memory.GetBuffer());
                                         memory.SetLength(0);
                                     });
+                                }
+                                
+                                else if (data.Length == 3 && data[0] == 4 && data[1] == 5 && data[2] == 6)
+                                {
+                                   
+                                    Application.Current.Dispatcher.Invoke(() =>
+                                    {
+                                        Image = ImageError();
+                                        Date = DateDisconect(memory.GetBuffer());
+                                        memory.SetLength(0);
+                                        udpClient.Close();
+                                    });
+                                    MessageBox.Show("Restart the connected!");
                                 }
                             }
                             catch (Exception e)
                             {
                                 MessageBox.Show(e.Message);
+                                Application.Current.Shutdown();
                             }
                         }
                     }
@@ -79,6 +98,18 @@ namespace TeamViwerClient.ViewModels
                 throw;
             }
         }
+        public string DateDisconect(byte[] bytes)
+        {
+            var dateDisc = DateTime.Now.ToString();
+            return dateDisc;
+        }
 
+        public ImageSource ImageError()
+        {
+            var img = new BitmapImage(new Uri(string.Format("networkdrive_error.png"), UriKind.Relative));
+            img.Freeze();
+            var image = img;
+            return image;
+        }
     }
 }

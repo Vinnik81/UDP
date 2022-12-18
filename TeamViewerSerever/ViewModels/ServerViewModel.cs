@@ -18,7 +18,7 @@ namespace TeamViewerSerever.ViewModels
         public string Ip { get => ip; set => Set(ref ip, value); }
         private int port = 8080;
         public int Port { get => port; set => Set(ref port, value); }
-        private string info;
+        private string info = DateTime.Now.ToString();
         public string Info { get => info; set => Set(ref info, value); }
 
         private RelayCommand startCommand;
@@ -45,7 +45,6 @@ namespace TeamViewerSerever.ViewModels
                             }
 
                             udpClient.Send(new byte[] { 1, 2, 3 }, 3, Ip, Port);
-
                         }
                         catch (Exception ex)
                         {
@@ -53,6 +52,39 @@ namespace TeamViewerSerever.ViewModels
                         }
                     }
                 });
+            });
+        private RelayCommand disconnectCommand;
+        public RelayCommand DisconnectCommand => disconnectCommand ??= new RelayCommand(
+            () =>
+            {
+                Task.Run(() =>
+                {
+                    UdpClient udpClient = new UdpClient();
+                    while (true)
+                    {
+                        try
+                        {
+                            byte[] data = DateDisconnect();
+                            byte[] chunk = new byte[10000];
+                            int bytesCount = 0;
+
+                            using (var memory = new MemoryStream(data))
+                            {
+                                while ((bytesCount = memory.Read(chunk, 0, 10000)) != 0)
+                                {
+                                    udpClient.Send(chunk, bytesCount, Ip, Port);
+                                }
+                            }
+                            udpClient.Send(new byte[] { 4, 5, 6 }, 3, Ip, Port);
+                            udpClient.Close();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                    }
+                });
+                            Application.Current.Shutdown();
             });
 
         public byte[] CaptureScreen()
@@ -70,6 +102,14 @@ namespace TeamViewerSerever.ViewModels
                     objBitmap.Save(memory, ImageFormat.Jpeg);
                 }
 
+                return memory.GetBuffer();
+            }
+        }
+        public byte[] DateDisconnect()
+        {
+            using (var memory = new MemoryStream())
+            {
+               var inf = Info;
                 return memory.GetBuffer();
             }
         }

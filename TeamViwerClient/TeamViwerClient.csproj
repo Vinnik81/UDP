@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <None Remove="Views\Photo\client.ico" />
+    <None Remove="Views\Photo\disconnected.png" />
+    <None Remove="Views\Photo\networkdrive_error.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +18,12 @@
 
   <ItemGroup>
     <Resource Include="Views\Photo\client.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\Photo\disconnected.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\Photo\networkdrive_error.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

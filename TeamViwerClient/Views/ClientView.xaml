@@ -7,13 +7,77 @@
         mc:Ignorable="d"
         Icon="Photo/client.ico"
         Title="ClientView" Height="450" Width="800">
+    <Window.Resources>
+        <Style x:Key="taskListItemTemplate" TargetType="TextBlock">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsDone}" Value="True">
+                    <Setter Property="Foreground" Value="Green"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsDone}" Value="False">
+                    <Setter Property="Foreground" Value="Red"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <ControlTemplate x:Key="roundedButton" TargetType="Button">
+            <Border BorderThickness="3" BorderBrush="#2676bb" CornerRadius="2" Background="{TemplateBinding Background}">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                                  Foreground="Black"
+                                   >
+                    <ContentPresenter/>
+                </TextBlock>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger  Property="IsMouseOver" Value="True">
+                    <Setter Property="FontSize" Value="20"></Setter>
+                    <Setter Property="Background" Value="Red"></Setter>
+                </Trigger>
+                <Trigger  Property="IsPressed" Value="True">
+                    <Setter Property="FontSize" Value="20"></Setter>
+                    <Setter Property="Background" Value="Green"></Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
     <DockPanel>
+        <DockPanel.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF2ACBFF" Offset="1"/>
+                <GradientStop Color="#FFC5F1FF" Offset="0.009"/>
+            </LinearGradientBrush>
+        </DockPanel.Background>
         <StackPanel  DockPanel.Dock="Bottom" Orientation="Horizontal">
-            <Button Command="{Binding ConnectCommand}" FontSize="25" >Connection</Button>
+            <Button Command="{Binding ConnectCommand}" FontSize="25" Template="{StaticResource roundedButton}">Connection</Button>
             <Label  FontSize="25">Ip Address</Label>
-            <TextBox Text="{Binding Ip}"  FontSize="25" Width="200"></TextBox>
+            <TextBox Text="{Binding Ip}"  FontSize="25" Width="200">
+                <TextBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF85E6FF" Offset="0"/>
+                        <GradientStop Color="#FF54D5FD" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBox.Background>
+            </TextBox>
             <Label  FontSize="25">Port</Label>
-            <TextBox Text="{Binding Port}" FontSize="25" Width="100"></TextBox>
+            <TextBox Text="{Binding Port}" FontSize="25" Width="100">
+                <TextBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF90E9FF" Offset="0"/>
+                        <GradientStop Color="#FF2CC7E8" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBox.Background>
+            </TextBox>
+            <Image Source="Photo/disconnected.png" Width="35"></Image>
+            <TextBox Text="{Binding Date}" FontSize="15" Width="151" Foreground="#FFD40000">
+                <TextBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF00A8FF" Offset="0.939"/>
+                        <GradientStop Color="#FFFFF2F2" Offset="0.865"/>
+                        <GradientStop Color="#FF4BBDFB" Offset="0.883"/>
+                        <GradientStop Color="#FF3DB6FB" Offset="0.587"/>
+                        <GradientStop Color="#FF37B6FF" Offset="0.07"/>
+                        <GradientStop Color="#FFE9EBF2" Offset="0.422"/>
+                    </LinearGradientBrush>
+                </TextBox.Background>
+            </TextBox>
         </StackPanel>
         <Image Source="{Binding Image}"></Image>
     </DockPanel>
